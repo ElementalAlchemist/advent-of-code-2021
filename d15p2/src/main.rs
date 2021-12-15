@@ -41,6 +41,7 @@ fn main() {
 		total_risk: 0,
 	});
 	risk_states.insert(0, initial_risk_level);
+	let mut visited: HashSet<(usize, usize)> = HashSet::new();
 
 	let destination_row = risk_map.len() - 1;
 	let destination_column = risk_map[destination_row].len() - 1;
@@ -49,6 +50,10 @@ fn main() {
 		let current_risk = *risk_states.keys().next().unwrap();
 		let current_risk_set = risk_states.remove(&current_risk).unwrap();
 		for state in current_risk_set {
+			if visited.contains(&(state.row, state.column)) {
+				continue;
+			}
+			visited.insert((state.row, state.column));
 			if state.row == destination_row && state.column == destination_column {
 				break 'per_risk_level state.total_risk;
 			}
